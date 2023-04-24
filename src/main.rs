@@ -117,16 +117,58 @@ impl Board {
         self.set_cell(row + 3, column + 2, Cell::Alive);
         self.set_cell(row + 3, column + 3, Cell::Alive);
     }
+
+    #[allow(unused)]
+    fn generate_gosper_glider_gun(&mut self, position: (usize, usize)) {
+        let (row, column) = position;
+        self.set_cell(row, column + 24, Cell::Alive);
+        self.set_cell(row + 1, column + 22, Cell::Alive);
+        self.set_cell(row + 1, column + 24, Cell::Alive);
+        self.set_cell(row + 2, column + 12, Cell::Alive);
+        self.set_cell(row + 2, column + 13, Cell::Alive);
+        self.set_cell(row + 2, column + 20, Cell::Alive);
+        self.set_cell(row + 2, column + 21, Cell::Alive);
+        self.set_cell(row + 2, column + 34, Cell::Alive);
+        self.set_cell(row + 2, column + 35, Cell::Alive);
+        self.set_cell(row + 3, column + 11, Cell::Alive);
+        self.set_cell(row + 3, column + 15, Cell::Alive);
+        self.set_cell(row + 3, column + 20, Cell::Alive);
+        self.set_cell(row + 3, column + 21, Cell::Alive);
+        self.set_cell(row + 3, column + 34, Cell::Alive);
+        self.set_cell(row + 3, column + 35, Cell::Alive);
+        self.set_cell(row + 4, column + 0, Cell::Alive);
+        self.set_cell(row + 4, column + 1, Cell::Alive);
+        self.set_cell(row + 4, column + 10, Cell::Alive);
+        self.set_cell(row + 4, column + 16, Cell::Alive);
+        self.set_cell(row + 4, column + 20, Cell::Alive);
+        self.set_cell(row + 4, column + 21, Cell::Alive);
+        self.set_cell(row + 5, column + 0, Cell::Alive);
+        self.set_cell(row + 5, column + 1, Cell::Alive);
+        self.set_cell(row + 5, column + 10, Cell::Alive);
+        self.set_cell(row + 5, column + 14, Cell::Alive);
+        self.set_cell(row + 5, column + 16, Cell::Alive);
+        self.set_cell(row + 5, column + 17, Cell::Alive);
+        self.set_cell(row + 5, column + 22, Cell::Alive);
+        self.set_cell(row + 5, column + 24, Cell::Alive);
+        self.set_cell(row + 6, column + 10, Cell::Alive);
+        self.set_cell(row + 6, column + 16, Cell::Alive);
+        self.set_cell(row + 6, column + 24, Cell::Alive);
+        self.set_cell(row + 7, column + 11, Cell::Alive);
+        self.set_cell(row + 7, column + 15, Cell::Alive);
+        self.set_cell(row + 8, column + 12, Cell::Alive);
+        self.set_cell(row + 8, column + 13, Cell::Alive);
+    }
 }
 
 
 fn main() {
-    let mut board = Board::new(50, 10);
+    let mut board = Board::new(80, 25);
 
-    board.generate_glider((3, 3));
+    //board.generate_glider((3, 3));
     //board.generate_blinker((3, 3));
     //board.generate_toad((3, 3));
     //board.generate_beacon((3, 3));
+    board.generate_gosper_glider_gun((3, 3));
 
     loop {
         print!("\x1B[2J\x1B[1;1H");
@@ -136,13 +178,13 @@ fn main() {
                 let cell = board.get_cell(row, column);
                 let symbol = match cell {
                     Cell::Alive => '◼',
-                    Cell::Dead => '◻'
+                    Cell::Dead => ' '
                 };
                 print!("{}", symbol);
             }
             print!("\n");
         }
 
-        std::thread::sleep(std::time::Duration::from_millis(250));
+        std::thread::sleep(std::time::Duration::from_millis(20));
     }
 }
