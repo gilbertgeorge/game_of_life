@@ -1,4 +1,4 @@
-use crate::cell::Cell;
+use super::cell::Cell;
 
 pub struct Board {
     pub cells: Vec<Cell>,
