@@ -1,5 +1,18 @@
-#[derive(Debug, Clone, Copy)]
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Cell {
-    Alive,
-    Dead
+    Dead = 0,
+    Alive = 1,
+}
+
+impl Cell {
+    pub fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Alive => Cell::Dead,
+            Cell::Dead => Cell::Alive
+        }
+    }
 }

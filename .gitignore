@@ -1,2 +1,7 @@
 /target
 /.idea
+www/dist/
+www/node_modules/
+www/package-lock.json
+pkg/
+target/

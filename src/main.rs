@@ -13,11 +13,11 @@ const REFRESH_RATE: u64 = 30;
 fn main() {
     let mut board = Board::new(WIDTH, HEIGHT);
 
-    organisms::generate_organism(OrganismType::GosperGliderGun, &mut board, (3, 3));
+    organisms::generate_organism(OrganismType::GliderGun, &mut board, (3, 3));
     //organisms::generate_organism(OrganismType::Blinker, &mut board, (20, 20));
     //organisms::generate_organism(OrganismType::Beacon, &mut board, (70, 5));
     organisms::generate_organism(OrganismType::Toad, &mut board, (65, 5));
-    organisms::generate_organism(OrganismType::GosperGliderGun, &mut board, (80, 10));
+    organisms::generate_organism(OrganismType::GliderGun, &mut board, (80, 10));
     //organisms::generate_organism(OrganismType::Glider, &mut board, (70, 20));
 
     loop {

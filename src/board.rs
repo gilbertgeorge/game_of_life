@@ -15,6 +15,18 @@ impl Board {
         }
     }
 
+    pub fn start(width: usize, height: usize, cells: Vec<Cell>) -> Board {
+        Board {
+            cells,
+            width,
+            height
+        }
+    }
+
+    pub fn clear(&mut self) {
+        self.cells = vec![Cell::Dead; self.width * self.height];
+    }
+
     pub fn get_cell(&self, row: usize, column: usize) -> &Cell {
         let index = self.get_index(row, column);
         &self.cells[index]
@@ -46,7 +58,7 @@ impl Board {
         self.cells[index] = cell;
     }
 
-    fn get_index(&self, row: usize, column: usize) -> usize {
+    pub fn get_index(&self, row: usize, column: usize) -> usize {
         row * self.width + column
     }
 
