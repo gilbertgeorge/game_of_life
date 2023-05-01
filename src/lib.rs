@@ -26,8 +26,8 @@ impl Universe {
     pub fn new() -> Universe {
         utils::set_panic_hook();
 
-        let width = 128;
-        let height = 128;
+        let width = 200;
+        let height = 200;
 
         let cells = (0..width * height)
             .map(|i| {
@@ -45,7 +45,7 @@ impl Universe {
     }
 
     pub fn generate_organism(&mut self, organism_type: OrganismType, row: u32, column: u32) {
-        organisms::generate_organism(organism_type, &mut self.board, (row as usize, column as usize));
+        organisms::generate_organism(organism_type, &mut self.board, (column as usize, row as usize));
     }
 
     pub fn clear(&mut self) {

@@ -1,10 +1,10 @@
 import {Universe, Cell, OrganismType} from "game_of_life";
 import { memory } from "game_of_life/game_of_life_bg";
 
-const CELL_SIZE = 5;
-const GRID_COLOR = "#CCCCCC";
-const DEAD_COLOR = "#FFFFFF";
-const ALIVE_COLOR = "#000000";
+const CELL_SIZE = 2;
+const GRID_COLOR = "#6DC599";
+const DEAD_COLOR = "#6DC599";
+const ALIVE_COLOR = "#374F2F";
 
 let universe = Universe.new();
 const width = universe.width();
@@ -20,7 +20,8 @@ let animationId = null;
 let paused = false;
 let speedFactor = 0.166;
 let selectedOrganism = OrganismType.Glider;
-let paint;
+let painting = false;
+let paintMode = false;
 
 const renderLoop = () => {
     if (!paused) {
@@ -40,8 +41,13 @@ const clearButton = document.getElementById("clear");
 clearButton.textContent = "❌";
 const speed = document.getElementById("speed");
 const revertButton = document.getElementById("revert");
-revertButton.textContent = "↩";
+revertButton.textContent = "⏪";
 const organismSelect = document.getElementById("organisms");
+const paintButton = document.getElementById("paint");
+const xCoord = document.getElementById("xCoord");
+const yCoord = document.getElementById("yCoord");
+const stepButton = document.getElementById("step");
+stepButton.textContent = "⏭️";
 
 const play = () => {
     paused = false;
@@ -56,39 +62,15 @@ const pause = () => {
     animationId = null;
 };
 
-playPauseButton.addEventListener("click", event => {
-    if (paused) {
-        play();
-    } else {
-        pause();
-    }
-});
+const paintModeOn = () => {
+    paintMode = true;
+    paintButton.textContent = "✏️";
+};
 
-clearButton.addEventListener("click", event => {
-    universe.clear();
-    drawGrid();
-    drawCells();
-    //pause();
-});
-
-revertButton.addEventListener("click", event => {
-    universe = Universe.new();
-    drawGrid();
-    drawCells();
-    //pause();
-});
-
-speed.addEventListener("input", event => {
-    speedFactor = 1 / event.target.value;
-});
-
-organismButton.addEventListener("click", event => {
-    universe.generate_organism(selectedOrganism, 50, 50)
-});
-
-organismSelect.addEventListener("change", event => {
-    selectedOrganism = OrganismType[event.target.value];
-});
+const paintModeOff = () => {
+    paintMode = false;
+    paintButton.textContent = "🖌️";
+};
 
 const drawGrid = () => {
     ctx.beginPath();
@@ -162,35 +144,118 @@ function paintPixel(event) {
     const canvasTop = (event.clientY - boundingRect.top) * scaleY;
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
-    if (paint && row >= 0 && row < height && col >= 0 && col < width) {
+    if (row >= 0 && row < height && col >= 0 && col < width) {
         let cell = universe.get_cell(row, col);
+        if (paintMode) {
         if (cell === Cell.Dead) {
             universe.toggle_cell(row, col);
+        }
+        } else {
+            universe.toggle_cell(row, col);
+            xCoord.value = col;
+            yCoord.value = row;
         }
     }
     drawCells();
     drawGrid();
 }
 
+playPauseButton.addEventListener("click", event => {
+    if (paused) {
+        play();
+    } else {
+        pause();
+    }
+});
+
+paintButton.addEventListener("click", event => {
+    if (paintMode) {
+        paintModeOff();
+    } else {
+        paintModeOn();
+    }
+});
+
+clearButton.addEventListener("click", event => {
+    universe.clear();
+    drawGrid();
+    drawCells();
+    //pause();
+});
+
+revertButton.addEventListener("click", event => {
+    universe = Universe.new();
+    drawGrid();
+    drawCells();
+    //pause();
+});
+
+stepButton.addEventListener("click", event => {
+    pause();
+    universe.tick();
+    drawGrid();
+    drawCells();
+});
+
+organismButton.addEventListener("click", event => {
+    universe.generate_organism(selectedOrganism, parseInt(yCoord.value), parseInt(xCoord.value));
+    if (paused) {
+        play();
+    }
+});
+
+xCoord.addEventListener("input", event => {
+    if (event.target.value >= 0 && event.target.value < (width - 1)) {
+        xCoord.value = event.target.value;
+    } else {
+        xCoord.value = width - 1;
+    }
+});
+
+yCoord.addEventListener("input", event => {
+    if (event.target.value >= 0 && event.target.value < (height - 1)) {
+        yCoord.value = event.target.value;
+    } else {
+        yCoord.value = height - 1;
+    }
+});
+
+speed.addEventListener("input", event => {
+    speedFactor = 1 / event.target.value;
+});
+
+organismSelect.addEventListener("change", event => {
+    selectedOrganism = OrganismType[event.target.value];
+});
+
 canvas.addEventListener("mousedown", event => {
-    paint = true;
+    painting = true;
     pause();
     paintPixel(event);
 });
 
 canvas.addEventListener("mousemove", event => {
-    if(paint) {
+    if(painting && paintMode) {
         paintPixel(event);
     }
 });
 
 canvas.addEventListener("mouseup", event => {
-    paint = false;
+    painting = false;
 });
 
 canvas.addEventListener("mouseleave", event => {
-    paint = false;
+    painting = false;
 });
+
+function setCoordsDefaults() {
+    xCoord.value = 50;
+    xCoord.min = 0;
+    xCoord.max = width - 1;
+    yCoord.value = 50;
+    yCoord.min = 0;
+    yCoord.max = height - 1;
+}
 
 function domReady(fn) {
     document.addEventListener("DOMContentLoaded", fn);
@@ -208,6 +273,8 @@ domReady(() => {
             organismSelect.add(option);
         }
     }
+    setCoordsDefaults();
 });
 
 play();
+paintModeOff();
