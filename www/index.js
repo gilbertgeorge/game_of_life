@@ -1,7 +1,7 @@
 import {Universe, Cell, OrganismType} from "game_of_life";
 import { memory } from "game_of_life/game_of_life_bg";
 
-const CELL_SIZE = 2;
+const CELL_SIZE = 4;
 const GRID_COLOR = "#6DC599";
 const DEAD_COLOR = "#6DC599";
 const ALIVE_COLOR = "#374F2F";
@@ -30,7 +30,7 @@ const renderLoop = () => {
             drawCells();
             universe.tick();
             animationId = requestAnimationFrame(renderLoop);
-        }, speedFactor * 200);
+        }, speedFactor * 100);
     }
 };
 
@@ -64,7 +64,7 @@ const pause = () => {
 
 const paintModeOn = () => {
     paintMode = true;
-    paintButton.textContent = "✏️";
+    paintButton.textContent = "◻️";
 };
 
 const paintModeOff = () => {
@@ -145,19 +145,16 @@ function paintPixel(event) {
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
     if (row >= 0 && row < height && col >= 0 && col < width) {
-        let cell = universe.get_cell(row, col);
         if (paintMode) {
-        if (cell === Cell.Dead) {
-            universe.toggle_cell(row, col);
-        }
+            universe.fill_cell(row, col);
+            drawCells();
+            drawGrid();
+            pause();
         } else {
-            universe.toggle_cell(row, col);
             xCoord.value = col;
             yCoord.value = row;
         }
     }
-    drawCells();
-    drawGrid();
 }
 
 playPauseButton.addEventListener("click", event => {
@@ -180,14 +177,12 @@ clearButton.addEventListener("click", event => {
     universe.clear();
     drawGrid();
     drawCells();
-    //pause();
 });
 
 revertButton.addEventListener("click", event => {
     universe = Universe.new();
     drawGrid();
     drawCells();
-    //pause();
 });
 
 stepButton.addEventListener("click", event => {
@@ -230,7 +225,6 @@ organismSelect.addEventListener("change", event => {
 
 canvas.addEventListener("mousedown", event => {
     painting = true;
-    pause();
     paintPixel(event);
 });
 

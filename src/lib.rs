@@ -72,6 +72,13 @@ impl Universe {
         let idx = self.board.get_index(row as usize, column as usize);
         self.board.cells[idx].toggle();
     }
+
+    pub fn fill_cell(&mut self, row: u32, column: u32) {
+        let idx = self.board.get_index(row as usize, column as usize);
+        if self.board.cells[idx] == Cell::Dead {
+            self.board.cells[idx].toggle();
+        }
+    }
 }
 
 impl fmt::Display for Universe {
