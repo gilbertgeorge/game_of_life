@@ -1,10 +1,10 @@
 import {Universe, Cell, OrganismType} from "game_of_life";
 import { memory } from "game_of_life/game_of_life_bg";
 
-const CELL_SIZE = 4;
-const GRID_COLOR = "#6DC599";
-const DEAD_COLOR = "#6DC599";
-const ALIVE_COLOR = "#374F2F";
+const CELL_SIZE = 3;
+const GRID_COLOR = "#E1E0E7";
+const DEAD_COLOR = "#E1E0E7";
+const ALIVE_COLOR = "#0D043E";
 
 let universe = Universe.new();
 const width = universe.width();
@@ -20,6 +20,7 @@ let animationId = null;
 let paused = false;
 let speedFactor = 0.166;
 let selectedOrganism = OrganismType.Glider;
+let mouseDown = false;
 let painting = false;
 let paintMode = false;
 
@@ -145,11 +146,14 @@ function paintPixel(event) {
     const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
     const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
     if (row >= 0 && row < height && col >= 0 && col < width) {
-        if (paintMode) {
+        if (paintMode && painting) {
+            pause();
             universe.fill_cell(row, col);
             drawCells();
-            drawGrid();
+        } else if (paintMode && !painting) {
             pause();
+            universe.toggle_cell(row, col);
+            drawCells();
         } else {
             xCoord.value = col;
             yCoord.value = row;
@@ -224,22 +228,31 @@ organismSelect.addEventListener("change", event => {
 });
 
 canvas.addEventListener("mousedown", event => {
-    painting = true;
+    mouseDown = true;
     paintPixel(event);
 });
 
 canvas.addEventListener("mousemove", event => {
-    if(painting && paintMode) {
+    if(paintMode && mouseDown) {
+        painting = true;
         paintPixel(event);
     }
 });
 
 canvas.addEventListener("mouseup", event => {
+    mouseDown = false;
     painting = false;
 });
 
 canvas.addEventListener("mouseleave", event => {
     painting = false;
+});
+
+canvas.addEventListener("mouseenter", event => {
+    if(paintMode && mouseDown) {
+        painting = true;
+        paintPixel(event);
+    }
 });
 
 function setCoordsDefaults() {
