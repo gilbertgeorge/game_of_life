@@ -1,0 +1,49 @@
+body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: center;*/
+    font-family: monospace;
+    /*white-space: pre;*/
+}
+#buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#speedSlider, #organismSelector {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    white-space: pre;
+}
+.selector {
+    height: 30px;
+    font-family: monospace;
+    white-space: pre;
+}
+.button {
+    width: 30px;
+    height: 30px;
+    border-radius: 5%;
+    font-family: monospace;
+    white-space: pre;
+    /*border: 1px solid black;*/
+    /*background-color: gray;*/
+    margin: 2px;
+}
+.inputCoord {
+    width: 38px;
+    height: 26px;
+    border-radius: 5%;
+    border: 1px solid black;
+    margin: 2px;
+}

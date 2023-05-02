@@ -2,17 +2,20 @@ mod glider;
 mod beacon;
 mod blinker;
 mod toad;
-mod gosper_glider_gun;
+mod glider_gun;
+mod hwss;
 
 use super::board::Board;
+use wasm_bindgen::prelude::*;
 
-#[allow(unused)]
+#[wasm_bindgen]
 pub enum OrganismType {
     Glider,
     Beacon,
     Blinker,
     Toad,
-    GosperGliderGun
+    GliderGun,
+    HWSS,
 }
 
 pub fn generate_organism(organism_type: OrganismType, board: &mut Board, position: (usize, usize)) {
@@ -21,6 +24,7 @@ pub fn generate_organism(organism_type: OrganismType, board: &mut Board, positio
         OrganismType::Beacon => beacon::generate(board, position),
         OrganismType::Blinker => blinker::generate(board, position),
         OrganismType::Toad => toad::generate(board, position),
-        OrganismType::GosperGliderGun => gosper_glider_gun::generate(board, position),
+        OrganismType::GliderGun => glider_gun::generate(board, position),
+        OrganismType::HWSS => hwss::generate(board, position),
     }
 }

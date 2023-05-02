@@ -1,0 +1,42 @@
+use crate::cell::Cell;
+use super::Board;
+
+pub fn generate(board: &mut Board, position: (usize, usize)) {
+    let (column, row) = position;
+    board.set_cell(row % board.height, (column + 24) % board.width, Cell::Alive);
+    board.set_cell((row + 1) % board.height, (column + 22) % board.width, Cell::Alive);
+    board.set_cell((row + 1) % board.height, (column + 24) % board.width, Cell::Alive);
+    board.set_cell((row + 2) % board.height, (column + 12) % board.width, Cell::Alive);
+    board.set_cell((row + 2) % board.height, (column + 13) % board.width, Cell::Alive);
+    board.set_cell((row + 2) % board.height, (column + 20) % board.width, Cell::Alive);
+    board.set_cell((row + 2) % board.height, (column + 21) % board.width, Cell::Alive);
+    board.set_cell((row + 2) % board.height, (column + 34) % board.width, Cell::Alive);
+    board.set_cell((row + 2) % board.height, (column + 35) % board.width, Cell::Alive);
+    board.set_cell((row + 3) % board.height, (column + 11) % board.width, Cell::Alive);
+    board.set_cell((row + 3) % board.height, (column + 15) % board.width, Cell::Alive);
+    board.set_cell((row + 3) % board.height, (column + 20) % board.width, Cell::Alive);
+    board.set_cell((row + 3) % board.height, (column + 21) % board.width, Cell::Alive);
+    board.set_cell((row + 3) % board.height, (column + 34) % board.width, Cell::Alive);
+    board.set_cell((row + 3) % board.height, (column + 35) % board.width, Cell::Alive);
+    board.set_cell((row + 4) % board.height, column % board.width, Cell::Alive);
+    board.set_cell((row + 4) % board.height, (column + 1) % board.width, Cell::Alive);
+    board.set_cell((row + 4) % board.height, (column + 10) % board.width, Cell::Alive);
+    board.set_cell((row + 4) % board.height, (column + 16) % board.width, Cell::Alive);
+    board.set_cell((row + 4) % board.height, (column + 20) % board.width, Cell::Alive);
+    board.set_cell((row + 4) % board.height, (column + 21) % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, column % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 1)% board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 10) % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 14) % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 16) % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 17) % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 22) % board.width, Cell::Alive);
+    board.set_cell((row + 5) % board.height, (column + 24) % board.width, Cell::Alive);
+    board.set_cell((row + 6) % board.height, (column + 10) % board.width, Cell::Alive);
+    board.set_cell((row + 6) % board.height, (column + 16) % board.width, Cell::Alive);
+    board.set_cell((row + 6) % board.height, (column + 24) % board.width, Cell::Alive);
+    board.set_cell((row + 7) % board.height, (column + 11) % board.width, Cell::Alive);
+    board.set_cell((row + 7) % board.height, (column + 15) % board.width, Cell::Alive);
+    board.set_cell((row + 8) % board.height, (column + 12) % board.width, Cell::Alive);
+    board.set_cell((row + 8) % board.height, (column + 13) % board.width, Cell::Alive);
+}
